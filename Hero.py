@@ -2,10 +2,12 @@ from _settings import *
 class Hero(pygame.sprite.Sprite):
 #конструктор класса
     def __init__(self):
-        self.image = pygame.image.load("Hero/landing.png")
-        self.rect = self.image.get_rect()
-        self.rect.y = 0.75*HIGH
+        self.animation()
+        self.rect = self.image1.get_rect()
+        self.rect.y = 0
         self.speed = 2
+        self.isjump = False
+        self.highofjump = 30
     def update(self,keys):
         # if self.rect.x > SIZE:
         #     self.rect.x  = 0
@@ -13,11 +15,38 @@ class Hero(pygame.sprite.Sprite):
         #     self.rect.x += 1
         if keys.get(pygame.K_RIGHT):
             self.rect.x += self.speed
+            self.move()
         if keys.get(pygame.K_LEFT):
             self.rect.x -= self.speed
         if keys.get(pygame.K_SPACE):
-            self.rect.y -= 3
+            #self.rect.y -= 3
+            self.jump()
         if self.rect.bottom != HIGH:
             self.rect.y += grav
-        gamedisplay.blit(self.image,self.rect)
+        gamedisplay.blit(self.image1,self.rect)
+    def jump(self):
+        if self.rect.bottom == HIGH:
+            self.rect.y -= self.highofjump
+        # if self.isjump == False:
+        #     self.isjump = True
+        #     self.rect.y  -= self.highofjump
+        #     self.isjump = False
+    def animation(self):
+        self.scale = 5
+        self.image1 = pygame.image.load("images/walk1.png")
+        self.image2 = pygame.image.load("images/walk2.png")
+        self.image3 = pygame.image.load("images/walk3.png")
+        self.image4 = pygame.image.load("images/walk4.png")
+        self.image5 = pygame.image.load("images/walk5.png")
+        self.image6 = pygame.image.load("images/walk6.png")
+        self.image7 = pygame.image.load("images/walk7.png")
+        self.image8 = pygame.image.load("images/walk8.png")
+        self.image9 = pygame.image.load("images/walk9.png")
+        self.image10 = pygame.image.load("images/walk10.png")
+        self.walk_Right = [self.image1,self.image2,self.image3,self.image4,self.image5,self.image6,self.image7,self.image8,self.image9,self.image10,]
+        for e in range(10):
+            self.walk_Right[e] = pygame.transform.scale(self.walk_Right[e],(self.walk_Right[e].get_width()//self.scale,self.walk_Right[e].get_height()//self.scale))
+    def move(self):
+        for img in self.walk_Right:
+            gamedisplay.blit(img,self.rect)
 hero = Hero()

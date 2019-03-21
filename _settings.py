@@ -21,4 +21,3 @@ gamedisplay = pygame.display.set_mode((SIZE, HIGH))
 pygame.display.set_caption("Jungl")
 grav = 5
 
-

@@ -2,6 +2,7 @@ from _settings import *
 class Hero(pygame.sprite.Sprite):
 #конструктор класса
     def __init__(self):
+        # super().__init__(self)
         self.animation()
         self.rect = self.walk[0].get_rect()
         self.rect.y = 200

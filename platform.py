@@ -1,4 +1,4 @@
-from _settings import gamedisplay, entities
+from _settings import gamedisplay, entities, platforms
 from levels import level1
 import pygame
 
@@ -20,12 +20,15 @@ class Platform(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-    def update(self, *args):
+    def update(self, keys):
         pass
 
+        #self.rect.y+= 1
 
 
-platforms = []
+
+
+#platforms_list = []
 
 def drawPlatform(x, y):
     startX, startY = x, y
@@ -34,8 +37,9 @@ def drawPlatform(x, y):
         for simvol in line:
             if simvol == '-':
                 p = Platform(x,y)
-                platforms.append(p)
+                #platforms_list.append(p)
                 entities.add(p)
+                platforms.add(p)
             x += Platform.SIZE
         y += Platform.HIGH
         x = startX

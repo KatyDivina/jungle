@@ -1,5 +1,5 @@
 from _settings import *
-import Hero
+from Hero import hero
 import platform
 
 keys = {} #Словарь, в которм хранится информация о нажатых кнопках

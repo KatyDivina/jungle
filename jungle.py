@@ -1,6 +1,6 @@
 from _settings import *
-from Hero import hero
-from platform import Platform
+import Hero
+import platform
 
 keys = {} #Словарь, в которм хранится информация о нажатых кнопках
 
@@ -16,7 +16,7 @@ while game:
         if event.type == pygame.USEREVENT:
             show_background()
             entities.draw(gamedisplay)
-            # entities.update()
-            hero.update(keys)
+            entities.update(keys)
+
     pygame.display.update()
 pygame.quit()

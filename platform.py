@@ -6,25 +6,30 @@ import pygame
 class Platform(pygame.sprite.Sprite):
     HIGH = 100
     SIZE = 100
+
     def __init__(self,x,y):
-        self.HIGH = 100
-        self.SIZE = 100
         pygame.sprite.Sprite.__init__(self)
+
+        self.HIGH = Platform.HIGH
+        self.SIZE = Platform.SIZE
+
         self.image = pygame.Surface((self.SIZE,self.HIGH))
+        self.image.fill((0, 255, 119))
+
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.image.fill((0,255,119))
-    def update(self):
-        gamedisplay.blit(self.image,self.rect)
+
+    def update(self, *args):
+        pass
+
 
 
 platforms = []
 
-
-
 def drawPlatform(x, y):
-    global platforms
+    startX, startY = x, y
+
     for line in level1:
         for simvol in line:
             if simvol == '-':
@@ -33,5 +38,7 @@ def drawPlatform(x, y):
                 entities.add(p)
             x += Platform.SIZE
         y += Platform.HIGH
-        x = 0
+        x = startX
+
+
 drawPlatform(0, 0)

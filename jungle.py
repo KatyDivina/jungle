@@ -3,8 +3,8 @@ from Hero import hero
 from platform import Platform
 from levels import level1
 def show_background():
-    for i in range(len(bg)):
-        gamedisplay.blit(bg[i], (0,0))
+    for img in bg:
+        gamedisplay.blit(img, (0,0))
 
 keys = {}
 platforms = []

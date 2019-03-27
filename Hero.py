@@ -65,5 +65,5 @@ class Hero(pygame.sprite.Sprite):
 
     def move(self):
         for img in self.walk:
-            gamedisplay.blit(img,self.rect)
+            gamedisplay.blit(img, self.rect)
 hero = Hero()

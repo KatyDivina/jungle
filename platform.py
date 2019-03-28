@@ -4,8 +4,8 @@ import pygame
 
 
 class Platform(pygame.sprite.Sprite):
-    HIGH = 100
-    SIZE = 100
+    HIGH = 50
+    SIZE = 150
 
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -28,7 +28,7 @@ class Platform(pygame.sprite.Sprite):
 
 
 
-#platforms_list = []
+platforms_list = []
 
 def drawPlatform(x, y):
     startX, startY = x, y
@@ -37,7 +37,7 @@ def drawPlatform(x, y):
         for simvol in line:
             if simvol == '-':
                 p = Platform(x,y)
-                #platforms_list.append(p)
+                platforms_list.append(p)
                 entities.add(p)
                 platforms.add(p)
             x += Platform.SIZE

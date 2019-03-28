@@ -21,8 +21,9 @@ class Platform(pygame.sprite.Sprite):
         self.rect.y = y
 
     def update(self, keys):
-        pass
-
+        self.image.fill((0, 255, 119))
+    def change_color(self,color):
+        self.image.fill(color)
         #self.rect.y+= 1
 
 

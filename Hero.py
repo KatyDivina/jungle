@@ -12,6 +12,7 @@ class Hero(pygame.sprite.Sprite):
 
         self.rect = self.walk[0].get_rect()
         self.rect.bottom = HIGH
+        self.stand = True
 
         self.speed = 5
         self.grav = 5
@@ -21,8 +22,11 @@ class Hero(pygame.sprite.Sprite):
         self.highofjump = self.maxHighOfJump
 
     def update(self, keys):
-        if self.rect.bottom < HIGH:  # Гравитация
+        self.collide()
+        print(self.rect.bottom,HIGH,self.stand)
+        if self.stand == False:  # Гравитация
             self.rect.y += self.grav
+
 
         if self.countanimation == 9:  # Обнуление счётчика анимации(всего 10 изображений в списке)
             self.countanimation = 0
@@ -38,7 +42,7 @@ class Hero(pygame.sprite.Sprite):
             self.image = self.walk[self.countanimation]
             self.image = pygame.transform.flip(self.image, 1, 0)
 
-        if keys.get(pygame.K_SPACE) and self.rect.bottom == HIGH:  # запуск прыжка
+        if keys.get(pygame.K_SPACE) and self.stand:  # запуск прыжка
             self.isjump = True
             self.highofjump = self.maxHighOfJump
 
@@ -57,6 +61,24 @@ class Hero(pygame.sprite.Sprite):
 
         else:  # End of jump
             self.isjump = False
+    def collide(self):
+        print(self.rect.bottom,HIGH,self.stand,"d")
+        if self.rect.bottom >= HIGH:
+            self.stand = True
+            self.rect.bottom = HIGH
+
+        else:
+            for p in platforms:
+                if pygame.sprite.collide_rect(self,p):
+                    if self.rect.bottom >= p.rect.top and self.rect.bottom <= p.rect.bottom:
+                        self.stand = True
+                        self.isjump = False
+                        self.rect.bottom = p.rect.top
+                        p.change_color((0,255,0))
+                else:
+                     self.stand = False
+
+
 
     def animation(self):
         self.walk = []

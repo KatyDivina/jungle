@@ -1,55 +1,64 @@
 from _settings import *
+
+
 class Hero(pygame.sprite.Sprite):
-#конструктор класса
+    # конструктор класса
     def __init__(self):
-        # super().__init__(self)
+        pygame.sprite.Sprite.__init__(self)
+
         self.animation()
-        self.rect = self.walk[0].get_rect()
-        self.rect.y = 200
-        self.speed = 5
-        self.img = self.walk[0]
-        self.isjump = False
-        self.highofjump = 10
-        self.grav = 5
         self.countanimation = 0
-    def update(self,keys):
-        if self.countanimation == 9:
+        self.image = self.walk[self.countanimation]
+
+        self.rect = self.walk[0].get_rect()
+        self.rect.bottom = HIGH
+
+        self.speed = 5
+        self.grav = 5
+
+        self.isjump = False
+        self.maxHighOfJump = 10
+        self.highofjump = self.maxHighOfJump
+
+    def update(self, keys):
+        if self.rect.bottom < HIGH:  # Гравитация
+            self.rect.y += self.grav
+
+        if self.countanimation == 9:  # Обнуление счётчика анимации(всего 10 изображений в списке)
             self.countanimation = 0
 
-        if keys.get(pygame.K_RIGHT):#движение в право
+        if keys.get(pygame.K_RIGHT):  # движение вправо
             self.rect.x += self.speed
             self.countanimation += 1
-            self.img = self.walk[self.countanimation]
-        elif keys.get(pygame.K_LEFT):#движение в лево
+            self.image = self.walk[self.countanimation]
+
+        elif keys.get(pygame.K_LEFT):  # движение влево
             self.countanimation += 1
             self.rect.x -= self.speed
-            self.img = self.walk[self.countanimation]
-            self.img =  pygame.transform.flip(self.img,1,0)
+            self.image = self.walk[self.countanimation]
+            self.image = pygame.transform.flip(self.image, 1, 0)
 
-        elif keys.get(pygame.K_SPACE):#прыжок
-            if self.rect.bottom >= HIGH:
-                self.isjump = True
-        if self.rect.bottom <= HIGH:
-            self.rect.y += self.grav
-        if self.isjump:
+        if keys.get(pygame.K_SPACE) and self.rect.bottom == HIGH:  # запуск прыжка
+            self.isjump = True
+            self.highofjump = self.maxHighOfJump
+
+        if self.isjump:  # Продолжаем прыгать
+            self.grav = 0
             self.jump()
-        gamedisplay.blit(self.img, self.rect)
+        else:  # Окончание прыжка
+            self.grav = 5
 
     def jump(self):
-        self.grav = 0
-        if self.highofjump >= -10:
-            if self.highofjump < 0:
-                self.rect.y +=(self.highofjump**2)//2
-            else:
-                self.rect.y -= (self.highofjump ** 2) // 2
+
+        if self.highofjump >= -self.maxHighOfJump:  # Jump
+            sign = 1 if self.highofjump < 0 else -1
+            self.rect.y += sign * (self.highofjump ** 2) // 2
             self.highofjump -= 1
-        else:
-            self.grav = 5
+
+        else:  # End of jump
             self.isjump = False
-            self.highofjump = 10
 
     def animation(self):
-
         self.walk = []
         self.walk.append(pygame.image.load("images/walk1.png"))
         self.walk.append(pygame.image.load("images/walk2.png"))
@@ -61,9 +70,7 @@ class Hero(pygame.sprite.Sprite):
         self.walk.append(pygame.image.load("images/walk8.png"))
         self.walk.append(pygame.image.load("images/walk9.png"))
         self.walk.append(pygame.image.load("images/walk10.png"))
-        self.walk_Left = self.walk[:]
 
-    def move(self):
-        for img in self.walk:
-            gamedisplay.blit(img,self.rect)
+
 hero = Hero()
+entities.add(hero)

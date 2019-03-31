@@ -14,68 +14,60 @@ class Hero(pygame.sprite.Sprite):
         self.rect.bottom = HIGH
         self.stand = True
 
-        self.speed = 5
+        self.speedx = 5
+        self.speedy = 0
         self.grav = 5
 
         self.isjump = False
-        self.maxHighOfJump = 10
+        self.maxHighOfJump = 50
         self.highofjump = self.maxHighOfJump
 
     def update(self, keys):
         self.collide()
-        print(self.rect.bottom,HIGH,self.stand)
-        if self.stand == False:  # Гравитация
-            self.rect.y += self.grav
+        if self.stand:  # Стоит
+            self.isjump = False
+            self.speedx = 5
+            self.speedy = 0
+        else:           #Падает
+            self.speedy += self.grav
 
 
         if self.countanimation == 9:  # Обнуление счётчика анимации(всего 10 изображений в списке)
             self.countanimation = 0
 
         if keys.get(pygame.K_RIGHT):  # движение вправо
-            self.rect.x += self.speed
+            self.rect.x += self.speedx
             self.countanimation += 1
             self.image = self.walk[self.countanimation]
 
         elif keys.get(pygame.K_LEFT):  # движение влево
             self.countanimation += 1
-            self.rect.x -= self.speed
+            self.rect.x -= self.speedx
             self.image = self.walk[self.countanimation]
             self.image = pygame.transform.flip(self.image, 1, 0)
 
         if keys.get(pygame.K_SPACE) and self.stand:  # запуск прыжка
+            self.speedx += 5
             self.isjump = True
-            self.highofjump = self.maxHighOfJump
+            self.speedy = -self.maxHighOfJump
+        self.rect.y += self.speedy
 
-        if self.isjump:  # Продолжаем прыгать
-            self.grav = 0
-            self.jump()
-        else:  # Окончание прыжка
-            self.grav = 5
-
-    def jump(self):
-
-        if self.highofjump >= -self.maxHighOfJump:  # Jump
-            sign = 1 if self.highofjump < 0 else -1
-            self.rect.y += sign * (self.highofjump ** 2) // 2
-            self.highofjump -= 1
-
-        else:  # End of jump
-            self.isjump = False
     def collide(self):
-        print(self.rect.bottom,HIGH,self.stand,"d")
-        if self.rect.bottom >= HIGH:
+        if self.rect.bottom >= HIGH + 20:#мы провалились
             self.stand = True
-            self.rect.bottom = HIGH
-
+            self.rect.bottom = HIGH + 1000
+            bonus_text = font2.render("game over ", True, (255, 0, 0))
+            gamedisplay.blit(bonus_text,(200,200))
         else:
             self.stand = False
             for p in platforms:
                 if pygame.sprite.collide_rect(self,p):
-                    if self.rect.bottom >= p.rect.top and self.rect.bottom <= p.rect.bottom:
-                        self.stand = True
-                        self.isjump = False
-                        self.rect.bottom = p.rect.top + 5
-                        p.change_color((0,255,0))
+                    if p.rect.bottom >= self.rect.bottom >= p.rect.top:
+                        if p.rect.left <= self.rect.centerx <= p.rect.right:
+                            self.stand = True
+                            self.isjump = False
+                            self.rect.bottom = p.rect.top + 5
+                            p.change_color((0,255,0))
 
 
 

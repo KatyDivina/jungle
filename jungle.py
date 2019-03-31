@@ -1,6 +1,7 @@
 from _settings import *
 from Hero import hero
 import platform
+from enemy import enemy
 
 keys = {} #Словарь, в которм хранится информация о нажатых кнопках
 

@@ -7,4 +7,7 @@ pygame.time.set_timer(pygame.USEREVENT,50) #Таймер, генерирующи
 
 entities = pygame.sprite.Group() #Группа всех игровых объектов
 platforms = pygame.sprite.Group() #Группа всех игровых объектов
+pygame.font.init()
+font1 = pygame.font.SysFont(None,50)
+font2 = pygame.font.SysFont('Comic Sans MS',150)
 

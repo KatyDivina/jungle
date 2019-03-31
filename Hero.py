@@ -68,15 +68,15 @@ class Hero(pygame.sprite.Sprite):
             self.rect.bottom = HIGH
 
         else:
+            self.stand = False
             for p in platforms:
                 if pygame.sprite.collide_rect(self,p):
                     if self.rect.bottom >= p.rect.top and self.rect.bottom <= p.rect.bottom:
                         self.stand = True
                         self.isjump = False
-                        self.rect.bottom = p.rect.top
+                        self.rect.bottom = p.rect.top + 5
                         p.change_color((0,255,0))
-                else:
-                     self.stand = False
+
 
 
 

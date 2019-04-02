@@ -1,4 +1,6 @@
 from _settings import *
+from background import HIGH
+from platform import platforms_list as platforms
 
 
 class Hero(pygame.sprite.Sprite):
@@ -11,7 +13,7 @@ class Hero(pygame.sprite.Sprite):
         self.image = self.walk[self.countanimation]
 
         self.rect = self.walk[0].get_rect()
-        self.rect.bottom = HIGH
+        self.rect.bottom = HIGH - 1000
         self.stand = True
 
         self.speedx = 5
@@ -22,7 +24,7 @@ class Hero(pygame.sprite.Sprite):
         self.maxHighOfJump = 50
         self.highofjump = self.maxHighOfJump
 
-    def update(self, keys):
+    def update(self, keys, *args):
         self.collide()
         if self.stand:  # Стоит
             self.isjump = False
@@ -52,8 +54,11 @@ class Hero(pygame.sprite.Sprite):
             self.speedy = -self.maxHighOfJump
         self.rect.y += self.speedy
 
+        print('y=', self.rect.y, 'bottom = ', self.rect.bottom, 'speed=', self.speedy, 'HIGH=',HIGH)
+        print()
+
     def collide(self):
-        if self.rect.bottom >= HIGH + 20:#мы провалились
+        if self.rect.bottom >= HIGH + 200:#мы провалились
             self.stand = True
             self.rect.bottom = HIGH + 1000
             bonus_text = font2.render("game over ", True, (255, 0, 0))
@@ -61,16 +66,25 @@ class Hero(pygame.sprite.Sprite):
         else:
             self.stand = False
             for p in platforms:
-                if pygame.sprite.collide_rect(self,p):
-                    if p.rect.bottom >= self.rect.bottom >= p.rect.top:
-                        if p.rect.left <= self.rect.centerx <= p.rect.right:
-                            self.stand = True
-                            self.isjump = False
-                            self.rect.bottom = p.rect.top + 5
-                            p.change_color((0,255,0))
+                if p.rect.left -15 <= self.rect.centerx <= p.rect.right+15:
 
+                    if pygame.sprite.collide_rect(self,p):
+                        if p.rect.bottom >= self.rect.bottom >= p.rect.top:
+                            self.setStand(p)
 
+                    else:
+                        p.change_color((255, 255, 255))
+                        print("else")
+                        print(self.rect.bottom <= p.rect.top, self.rect.bottom, p.rect.top)
+                        print(self.rect.bottom+self.speedy >= p.rect.bottom, 'b+speed+grav=', self.rect.bottom+self.speedy  , 'p.rect.bottom=', p.rect.bottom)
 
+                        if self.rect.bottom <= p.rect.top and self.rect.bottom+self.speedy+self.grav >= p.rect.bottom:
+                            self.setStand(p)
+
+    def setStand(self, p):
+        self.stand = True
+        self.rect.bottom = p.rect.top + 5
+        p.change_color((0, 255, 0))
 
     def animation(self):
         self.walk = []
@@ -86,5 +100,4 @@ class Hero(pygame.sprite.Sprite):
         self.walk.append(pygame.image.load("images/walk10.png"))
 
 
-hero = Hero()
-entities.add(hero)
+

@@ -1,8 +1,8 @@
-from _settings import entities, platforms,SIZE
-from levels import level1
+from _settings import entities
+from background import SIZE
 import pygame
-from Hero import hero
-from enemy import *
+from levels import *
+from enemy import Enemy
 
 class Platform(pygame.sprite.Sprite):
     HIGH = 50
@@ -21,17 +21,13 @@ class Platform(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-    def update(self, keys):
+    def update(self, keys, hero):
         if hero.rect.centerx > SIZE // 2:
             self.rect.x -= 3
 
-            # hero.rect.x -= 1
-    # self.image.fill((0, 255, 119))
+
     def change_color(self,color):
         self.image.fill(color)
-        #self.rect.y+= 1
-
-
 
 
 platforms_list = []
@@ -41,21 +37,16 @@ def drawPlatform(x, y):
 
     for line in level1:
         for simvol in line:
-            if simvol == '-':
+            if simvol != ' ':
                 p = Platform(x,y)
                 platforms_list.append(p)
                 entities.add(p)
-                platforms.add(p)
-            if simvol == '+':
-                p = Platform(x, y)
-                platforms_list.append(p)
-                entities.add(p)
-                platforms.add(p)
-                e = Enemy(p.rect.centerx,p.rect.top)
-                entities.add(e)
+                if simvol == '+':
+                    e = Enemy(p)
+                    entities.add(e)
             x += Platform.SIZE
         y += Platform.HIGH
         x = startX
 
 
-drawPlatform(0, 0)
+

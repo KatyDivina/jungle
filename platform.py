@@ -1,8 +1,11 @@
-from _settings import entities
+from _settings import entities, platforms, enemys
 from background import SIZE
-import pygame
+from _settings import *
 from levels import *
-from enemy import Enemy
+from enemy import Enemy 
+
+hero = entities.sprites()[0]
+
 
 class Platform(pygame.sprite.Sprite):
     HIGH = 50
@@ -21,7 +24,7 @@ class Platform(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-    def update(self, keys, hero):
+    def update(self, keys):
         if hero.rect.centerx > SIZE // 2:
             self.rect.x -= 3
 
@@ -41,9 +44,11 @@ def drawPlatform(x, y):
                 p = Platform(x,y)
                 platforms_list.append(p)
                 entities.add(p)
+                platforms.add(p)
                 if simvol == '+':
                     e = Enemy(p)
                     entities.add(e)
+                    enemys.add(e)
             x += Platform.SIZE
         y += Platform.HIGH
         x = startX

@@ -1,5 +1,4 @@
 import pygame
-#from background import *
 pygame.init()
 
 #ТАЙМЕР
@@ -11,7 +10,9 @@ pygame.font.init()
 font1 = pygame.font.SysFont(None, 50)
 font2 = pygame.font.SysFont('Comic Sans MS', 150)
 
-entities = pygame.sprite.Group() #Группа всех игровых объектов
+entities = pygame.sprite.Group() #Группа ВСЕХ игровых объектов
+platforms = pygame.sprite.Group() #Группа всех платформ
+enemys = pygame.sprite.Group() #Группа всех игровых врагов
 
 
 

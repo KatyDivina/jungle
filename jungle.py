@@ -10,6 +10,7 @@ platform.drawPlatform(0, 0)
 
 
 keys = {} #Словарь, в которм хранится информация о нажатых кнопках
+
 game = True
 while game:
     for event in pygame.event.get():
@@ -22,7 +23,7 @@ while game:
         if event.type == pygame.USEREVENT:
             show_background()
             entities.draw(gamedisplay)
-            entities.update(keys, hero)
+            entities.update(keys)
 
     pygame.display.update()
 pygame.quit()
